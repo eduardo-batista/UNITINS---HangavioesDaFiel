@@ -1,0 +1,71 @@
+﻿@model HangavioesDaFiel.Models.Airplane
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Airplane</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Identifier" class="control-label"></label>
+                <input asp-for="Identifier" class="form-control" />
+                <span asp-validation-for="Identifier" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ClassMotor" class="control-label"></label>
+                <select asp-for="ClassMotor" class="form-control">
+                    <option value="AM1">Monomotor</option>
+                    <option value="AM2">Bimotor</option>
+                    <option value="AM3">Trimotor</option>
+                    <option value="AM4">Quadrimotor</option>
+                    <option value="AM5">Multimotor</option>
+                </select>
+                <span asp-validation-for="ClassMotor" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ClassHeight" class="control-label"></label>
+                <select asp-for="ClassHeight" class="form-control">
+                    <option value="AA1">Baixa Altura</option>
+                    <option value="AA2">Média Altura</option>
+                    <option value="AA3">Alto</option>
+                </select>
+                <span asp-validation-for="ClassHeight" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ClassSize" class="control-label"></label>
+                <select asp-for="ClassSize" class="form-control">
+                    <option value="AP1">Pequeno Porte</option>
+                    <option value="AP2">Médio Porte</option>
+                    <option value="AP3">Grande Porte</option>
+                </select>
+                <span asp-validation-for="ClassSize" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
