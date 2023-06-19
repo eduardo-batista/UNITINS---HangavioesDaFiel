@@ -52,5 +52,19 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Cpf').mask('999.999.999-99');
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#Phone').mask('(99) 99999-9999');
+        });
+    </script>
 }

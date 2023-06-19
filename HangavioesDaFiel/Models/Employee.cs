@@ -7,6 +7,7 @@ namespace HangavioesDaFiel.Models
     {
         [Required]
         [DisplayName("Função")]
+        [MaxLength(30, ErrorMessage = "Máximo de 30 caracteres")]
         public string Function { get; set; }
 
         public Employee() { }

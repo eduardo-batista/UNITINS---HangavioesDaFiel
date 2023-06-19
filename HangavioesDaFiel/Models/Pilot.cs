@@ -10,6 +10,7 @@ namespace HangavioesDaFiel.Models
         public string Aptitude { get; set; }
         [Required]
         [DisplayName("Registro")]
+        [MaxLength(6, ErrorMessage = "Máximo de 6 caracteres")]
         public string Registration { get; set; }
         public Pilot() { }
     }

@@ -9,6 +9,7 @@ namespace HangavioesDaFiel.Models
         public int Id { get; set; }
         [Required]
         [DisplayName("Identificador")]
+        [MaxLength(100, ErrorMessage = "Máximo de 100 caracteres")]
         public string Identifier { get; set; }
         [Required]
         [DisplayName("Altura")]

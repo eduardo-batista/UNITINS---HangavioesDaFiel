@@ -7,6 +7,7 @@ namespace HangavioesDaFiel.Models
     {
         [Required]
         [DisplayName("Senha")]
+        [MinLength(8, ErrorMessage = "Mínimo de 8 caracteres.")]
         public string Password { get; set; }
         public Administrator() { }
     }
