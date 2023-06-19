@@ -22,6 +22,7 @@ namespace HangavioesDaFiel.Models
         [Required]
         [DisplayName("Líder de Equipe")]
         public int EmployeeId { get; set; }
+        [DisplayName("Líder de Equipe")]
         public virtual Employee? Employee { get; set; }
 
 

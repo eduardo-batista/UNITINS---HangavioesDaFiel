@@ -28,6 +28,7 @@ namespace HangavioesDaFiel.Models
         [AllowNull]
         [DisplayName("Ocupada por")]
         public int? AirplaneId { get; set; }
+        [DisplayName("Ocupada por")]
         public virtual Airplane? Airplane { get; set; }
 
         public Garage() { }
