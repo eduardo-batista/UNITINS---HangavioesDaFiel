@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HangavioesDaFiel.Dal;
 using HangavioesDaFiel.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HangavioesDaFiel.Controllers
 {
@@ -63,10 +64,12 @@ namespace HangavioesDaFiel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DepartureDate,ReturnDate,TeamId,PilotId,CopilotId,AirplaneId")] Travel travel)
+        public async Task<IActionResult> Create([Bind("Id,ReturnDate,TeamId,PilotId,CopilotId,AirplaneId")] Travel travel)
         {
             if (ModelState.IsValid)
             {
+                travel.DepartureDate = DateTime.Now;
+
                 var pilot = _context.Find<Pilot>(travel.PilotId);
                 var copilot = _context.Find<Pilot>(travel.CopilotId);
                 var airplane = _context.Find<Airplane>(travel.AirplaneId);
@@ -81,7 +84,7 @@ namespace HangavioesDaFiel.Controllers
                     ViewData["TeamId"] = new SelectList(_context.Team, "Id", "Identifier", travel.TeamId);
                     return View(travel);
                 } 
-                else if (copilot.Status == false)
+                else if (copilot != null && copilot.Status == false)
                 {
                     ModelState.AddModelError("", "Copiloto Inativo");
                     ViewData["AirplaneId"] = new SelectList(_context.Airplanes, "Id", "Identifier", travel.AirplaneId);
@@ -124,6 +127,14 @@ namespace HangavioesDaFiel.Controllers
                 {
                     airplane.Traveling = true;
                     _context.Update(airplane);
+
+                    var garage = _context.Garage.FirstOrDefault(g => g.AirplaneId == travel.AirplaneId);
+                    if (garage != null)
+                    {
+                        garage.AirplaneId = null;
+                        _context.Update(garage);
+                    }
+
                     _context.Add(travel);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -195,7 +206,7 @@ namespace HangavioesDaFiel.Controllers
                         ViewData["TeamId"] = new SelectList(_context.Team, "Id", "Identifier", travel.TeamId);
                         return View(travel);
                     }
-                    else if (copilot.Status == false)
+                    else if (copilot != null && copilot.Status == false)
                     {
                         ModelState.AddModelError("", "Copiloto Inativo");
                         ViewData["AirplaneId"] = new SelectList(_context.Airplanes, "Id", "Identifier", travel.AirplaneId);
@@ -222,22 +233,11 @@ namespace HangavioesDaFiel.Controllers
                         ViewData["TeamId"] = new SelectList(_context.Team, "Id", "Identifier", travel.TeamId);
                         return View(travel);
                     }
-                    else if (airplane.Traveling)
-                    {
-                        ModelState.AddModelError("", "Avião já em viagem");
-                        ViewData["AirplaneId"] = new SelectList(_context.Airplanes, "Id", "Identifier", travel.AirplaneId);
-                        ViewData["CopilotId"] = new SelectList(_context.Pilot, "Id", "Name", travel.CopilotId);
-                        ViewData["PilotId"] = new SelectList(_context.Pilot, "Id", "Name", travel.PilotId);
-                        ViewData["TeamId"] = new SelectList(_context.Team, "Id", "Identifier", travel.TeamId);
-                        return View(travel);
-                    }
                     else if (pilot!.Aptitude.Equals(airplane!.ClassMotor) &&
                     team!.Aptitude.Equals(airplane!.ClassMotor) &&
                     ((copilot == null && (airplane!.ClassMotor.Equals("AM1") || airplane!.ClassMotor.Equals("AM2"))) ||
                     (copilot != null && copilot.Aptitude.Equals(airplane!.ClassMotor))))
                     {
-                        airplane.Traveling = true;
-                        _context.Update(airplane);
                         _context.Update(travel);
                         await _context.SaveChangesAsync();
                     }
