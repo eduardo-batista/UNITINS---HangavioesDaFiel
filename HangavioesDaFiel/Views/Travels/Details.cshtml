@@ -4,10 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Detalhes</h1>
 
 <div>
-    <h4>Travel</h4>
+    <h4>Viagem</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -26,29 +26,29 @@
             @Html.DisplayNameFor(model => model.Team)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Team.Aptitude)
+            @Html.DisplayFor(model => model.Team.Identifier)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Pilot)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pilot.Aptitude)
+            @Html.DisplayFor(model => model.Pilot.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Copilot)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Copilot.Aptitude)
+            @Html.DisplayFor(model => model.Copilot.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Airplane)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Airplane.ClassHeight)
+            @Html.DisplayFor(model => model.Airplane.Identifier)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-info">Voltar</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">Editar</a>
 </div>
