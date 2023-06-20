@@ -14,6 +14,36 @@ namespace HangavioesDaFiel.Controllers
     {
         private readonly Context _context;
 
+        public ActionResult Login(string email, string password)
+        {
+            Administrator user;
+            if (email == null || password == null)
+            {
+                ModelState.AddModelError("", "Preencha os Campos necessários!");
+                return View();
+            }
+            else
+            {
+                user = _context.Administrator.Where(u => u.Email == email && u.Password == password).FirstOrDefault();
+
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Usuário ou senha inválidos!");
+                    return View();
+                }
+                else if (!user.Status)
+                {
+                    ModelState.AddModelError("", "Usuário inativo! Contate o administrador do sistema.");
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+        }
+
         public AdministratorsController(Context context)
         {
             _context = context;
@@ -63,6 +93,22 @@ namespace HangavioesDaFiel.Controllers
                 _context.Add(administrator);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            return View(administrator);
+        }
+
+        // POST: Administrators/CreateDeslogado
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateDeslogado([Bind("Password,Id,Name,Cpf,Phone,Email,Status")] Administrator administrator)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(administrator);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Login", "Administrators");
             }
             return View(administrator);
         }
